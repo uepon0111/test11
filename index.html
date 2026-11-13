@@ -163,6 +163,26 @@ h3{font-size:16px;font-weight:900;margin:0 0 12px}
 .rp img{display:block;max-width:100%;max-height:130px;border:1px solid var(--ln);border-radius:8px;background:#fff;object-fit:contain}
 .ro{margin-top:8px;font-size:13px;word-break:break-all}.ro code{background:#fff;border-radius:6px;padding:1px 6px;font-size:12.5px}.ro b{font-size:15px}
 @media(max-width:900px){.anb{grid-template-columns:minmax(0,1fr)}.anl{position:static}.anv{max-height:none}}
+/* ===== 改善パッチ：読み込み・ホーム・通知 ===== */
+#tb,.sbp i,#scb{transition:width .3s linear}
+.te{display:flex;justify-content:space-between;gap:10px;margin:-2px 0 10px;font-size:12px;font-weight:700;color:var(--mu)}.te #tz{color:var(--ink)}
+.lvt{--lvh:72px;background:#fff;border:1px solid #C9D9EE;border-radius:18px;padding:4px 14px;box-shadow:0 6px 18px rgba(44,123,245,.1)}
+.lvt .lvr{border-top-color:#DCE6F4}.lvt .lvr:last-child{border-bottom:0}
+.lvt .lvl{height:18px;font-size:12px;color:#3A4A66;grid-template-columns:56px minmax(0,1fr) 70px 38px}
+.lvt .jb{height:9px;background:#D5E1F2;box-shadow:inset 0 0 0 1px #C4D4EA}
+.lvt .lvl b{font-size:13px}.lvt .lvr>b{font-size:15px}
+@media(max-width:520px){.lvt .lvl{grid-template-columns:50px minmax(0,1fr) 36px}.lvt .lvc{display:none}.lvt .lvr{grid-template-columns:46px minmax(0,1fr)}}
+.stl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0 24px;padding:0;border:0}
+.stl .st{position:relative;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"j l" "n n" "s s" "b b";align-items:center;gap:2px 10px;padding:14px 16px;background:#fff;border:1px solid var(--ln);border-radius:18px;overflow:hidden;box-shadow:0 4px 14px rgba(44,123,245,.07);transition:transform .25s,box-shadow .25s}
+.stl .st:before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--g)}
+.stl .sj{grid-area:j;width:34px;height:34px;border-radius:11px;background:var(--g);color:#fff;display:grid;place-items:center}.stl .sj .ic{width:18px;height:18px}
+.stl .st span{grid-area:l;font-size:12px;font-weight:700}
+.stl .st b{grid-area:n;justify-self:start;font-size:34px;line-height:1.15;font-weight:900;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stl .st small{grid-area:s;font-size:11px;color:var(--mu)}
+.sbr{grid-area:b;height:6px;border-radius:3px;background:#DCE6F4;overflow:hidden;margin-top:6px}.sbr i{display:block;height:100%;border-radius:3px;background:var(--g)}
+.st[data-act]{cursor:pointer}.st[data-act]:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.pu{position:absolute;top:12px;right:12px;width:9px;height:9px;border-radius:50%;background:#FF5A6E;animation:pl 1.6s infinite}@keyframes pl{0%{box-shadow:0 0 0 0 rgba(255,90,110,.55)}70%,100%{box-shadow:0 0 0 9px rgba(255,90,110,0)}}
+.ni-im{width:auto;height:84px;min-width:60px;max-width:200px;aspect-ratio:var(--ar,16/9)}.ni-im img{object-fit:contain}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
 <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></symbol>
@@ -190,6 +210,7 @@ h3{font-size:16px;font-weight:900;margin:0 0 12px}
 <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
 <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
 <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
 </defs></svg>
 <div id="app"><aside id="side"><div class="brand"><div class="logo"><svg class="ic"><use href="#i-music"/></svg></div><span>SEKAI RESULT</span></div><nav id="nav"></nav>
 <div class="usr"><div class="av" id="uav"></div><div><b id="unm"></b><small id="uem">Googleアカウント</small></div></div></aside><div id="scrim" data-act="side"></div>
@@ -197,7 +218,7 @@ h3{font-size:16px;font-weight:900;margin:0 0 12px}
 <select class="btn" id="bs" aria-label="ミス数の基準"><option value="FC">FC基準</option><option value="AP">AP基準</option><option value="TA">大会基準</option></select>
 <button class="ib" data-act="go" data-v="notif" aria-label="通知"><svg class="ic"><use href="#i-bell"/></svg><em class="bdg nbd"></em></button></header><main id="view"></main></div></div>
 <div id="md"></div><div id="ts"></div>
-<div id="tx"><div class="lc" style="padding:24px;width:min(440px,92vw);text-align:left"><div class="rw"><div class="sp" style="margin:0;width:30px;height:30px;border-width:3px"></div><b id="tm" style="flex:1;min-width:0"></b><b id="tp" style="font-size:24px;font-weight:900">0%</b></div><div class="pb"><i id="tb"></i></div><div id="pv" hidden><canvas id="pc"></canvas><div><b class="sb" id="pn" style="display:block;margin-bottom:6px;color:var(--ink)"></b><div class="lg2" id="pl"></div></div></div><ul id="tl"></ul><div class="row ta" id="ta" hidden><button class="btn" data-act="tmin"><svg class="ic"><use href="#i-x"/></svg>閉じる（裏で続行）</button><button class="btn d" id="tpz" data-act="tpz"><svg class="ic"><use href="#i-pause"/></svg>中断</button></div><small class="sb w" style="display:block">処理中は操作できません。中断されても、次回起動時に自動で整合します。</small></div></div>
+<div id="tx"><div class="lc" style="padding:24px;width:min(440px,92vw);text-align:left"><div class="rw"><div class="sp" style="margin:0;width:30px;height:30px;border-width:3px"></div><b id="tm" style="flex:1;min-width:0"></b><b id="tp" style="font-size:24px;font-weight:900">0%</b></div><div class="pb"><i id="tb"></i></div><div class="te" id="te" hidden><span id="tz"></span><span id="tc"></span></div><div id="pv" hidden><canvas id="pc"></canvas><div><b class="sb" id="pn" style="display:block;margin-bottom:6px;color:var(--ink)"></b><div class="lg2" id="pl"></div></div></div><ul id="tl"></ul><div class="row ta" id="ta" hidden><button class="btn" data-act="tmin"><svg class="ic"><use href="#i-x"/></svg>閉じる（裏で続行）</button><button class="btn d" id="tpz" data-act="tpz"><svg class="ic"><use href="#i-pause"/></svg>中断</button></div><small class="sb w" style="display:block">処理中は操作できません。中断されても、次回起動時に自動で整合します。</small></div></div>
 <div id="an" hidden><div class="anh"><b id="ant"></b><button class="btn" id="anz" data-act="anz">実寸で見る</button><button class="btn" data-act="ans"><svg class="ic"><use href="#i-image"/></svg>注釈付き画像を保存</button><button class="btn p" data-act="anx"><svg class="ic"><use href="#i-x"/></svg>閉じる</button></div><div class="anb"><div class="anl"><div class="anv"><canvas id="anc" width="2" height="2"></canvas></div><div class="ank"><label><input type="checkbox" data-an="reg" checked>領域（A〜I）</label><label><input type="checkbox" data-an="lin" checked>境界線（太線）</label><label><input type="checkbox" data-an="scn" checked>スキャン線（細線）</label><label><input type="checkbox" data-an="num" checked>手順番号</label></div><div class="anlg" id="ang"></div></div><div class="anr"><div class="cx" id="ansum"></div><div class="cx"><h3 style="margin:0 0 6px">検出の手順</h3><ul class="anlog" id="anlog"></ul></div><div class="cx"><h3 style="margin:0 0 10px">領域ごとの処理前・処理後</h3><div class="rcs" id="ancards"></div></div></div></div></div>
 <input type="file" id="afi" accept="image/*" hidden>
 <div id="lg"><div class="lc"><div class="logo" style="margin:0 auto 16px;width:64px;height:64px;border-radius:20px"><svg class="ic" style="width:30px;height:30px"><use href="#i-music"/></svg></div><h1 style="margin:0 0 8px;font-size:26px;font-weight:900">SEKAI RESULT</h1><p class="sb w" style="margin:0 0 24px;font-size:14px">Googleアカウントでログインすると、ドライブのリザルト画像を読み込みます。</p><button class="btn p" data-act="login" style="width:100%;justify-content:center;height:48px"><b style="font-size:18px">G</b>Googleでログイン</button></div></div>
@@ -210,7 +231,7 @@ const BS={FC:'FC基準',AP:'AP基準',TA:'大会基準'},UN=['バーチャル・
 const FN='SekaiResults',DBU='https://sekai-world.github.io/sekai-master-db-diff/',DV='https://www.googleapis.com/drive/v3/files',SC='https://www.googleapis.com/auth/drive',CID_DEFAULT='888821664633-osk51l7ooscsfdlp0qiqct7tcpcv65ij.apps.googleusercontent.com';/* ←OAuthクライアントIDを直接設定する場合はここに記入（ログイン画面での入力も可） */
 const LS=localStorage,gj=k=>{try{return JSON.parse(LS.getItem(k))}catch(e){return null}},cid=()=>LS.getItem('sr_cid')||CID_DEFAULT;
 const CN=['FC基準','AP基準','大会基準','コンボ数'],EM={area:'リザルト画面の領域を検出できません',title:'楽曲タイトルを特定できません',diff:'難易度を特定できません',lv:'難易度とレベルが一致しません',num:'判定数・コンボ数を読み取れません',sum:'判定数の合計がノーツ数と一致しません',api:'OCRの実行に失敗しました',unk:'楽曲情報が見つかりません'};
-let S=[],SM=new Map,R=[],ER=[],N=gj('sr_n')||[],US={n:'',e:''},TKN='',FID='',TX=0,TXN=1,TXP=[],TXM=0,TXT=0,TXL='',PZ=0,PS='',RU=[];
+let S=[],SM=new Map,R=[],ER=[],N=gj('sr_n')||[],US={n:'',e:''},TKN='',FID='',TX=0,TXN=1,TXP=[],TXM=0,TXT=0,TXL='',PZ=0,PS='',RU=[],TXW=[],TXB=[],TXn=[],TXR0=0,TXS0=0,TXF=0,TXE=0,TXK=0,TXI=-1,TXZ='',TXTM=0,TXY=0;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let JB=0;const JX=new Set,JH=[['wsrv.nl/?w=160&h=160&fit=cover&output=webp&q=70&url=storage.sekai.best/sekai-jp-assets/music/jacket/{}/{}.webp','no-referrer'],['storage.sekai.best/sekai-jp-assets/music/jacket/{}/{}.webp','no-referrer'],['storage.sekai.best/sekai-jp-assets/music/jacket/{}/{}.webp','strict-origin-when-cross-origin'],['assets.unipjsk.com/startapp/music/jacket/{}/{}.webp','no-referrer']];
 const JU=(id,k=JB)=>{const n='jacket_s_'+String(id).padStart(3,'0');return'https://'+JH[k][0].split('{}').join(n)},
@@ -218,6 +239,9 @@ jkE=i=>{const k=(+i.dataset.j)+1;if(!JH[k]){JX.add(+i.dataset.i);return i.remove
 const tgs=s=>s.u.map(i=>UN[i]).join(' / '),sv=()=>LS.setItem('sr_n',JSON.stringify(N.slice(0,200)));
 const JK=(s,x='')=>`<div class="jk" style="background:${jk(s.id)};${x}">${ic('music')}${JX.has(s.id)?'':`<img src="${JU(s.id)}" data-i="${s.id}" data-j="${JB}" alt="" referrerpolicy="${JH[JB][1]}" onload="JB=+this.dataset.j" onerror="jkE(this)">`}</div>`;
 const thm=(r,n)=>r.th?`<img src="${r.th.replace(/=s\d+(-c)?$/,'=s'+n)}" alt="" referrerpolicy="no-referrer">`:ic('image');
+const arx=(w,h)=>w>0&&h>0?Math.min(2.4,Math.max(.5,w/h)).toFixed(3):'1.778';
+/* 手動登録した記録が、同じ譜面の既存の最高記録を更新するかを調べ、通知文を返す（更新なしなら空） */
+function bsT(r){const h=R.filter(x=>x.s==r.s&&x.d==r.d&&x.id!=r.id);if(!h.length)return'初回記録';const b=h.map(mt4).reduce((a,x)=>a.map((y,i)=>Math.min(y,x[i]))),v=mt4(r);return v.map((x,j)=>x<b[j]?`${CN[j]} ${Math.abs(b[j])} → ${Math.abs(x)}`:'').filter(Boolean).join(' / ')}
 const etx=e=>{const[c,p]=String(e).split(':');return c=='dup'?`重複の可能性：リザルト・撮影日時・画面サイズ・画像が近似（一致率 ${p}%）`:`読み取りエラー：${EM[c]||'不明なエラー'}${+p?`（類似度 ${p}%）`:''}`};
 const mkE=(f,e,pt)=>({u:f.id,k:'err',f:esc(f.name),t:Date.parse(f.createdTime),tx:etx(e),e:String(e),fm:f,pt});
 /* ---- 認証・Drive ---- */
@@ -270,22 +294,30 @@ async function eim(u,t='#ei',q){const k=EK;try{const b=await(await api(`${DV}/${
 const tl=t=>{const d=new Date(t);return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())+'T'+p2(d.getHours())+':'+p2(d.getMinutes())+':'+p2(d.getSeconds())};
 const mS=()=>S.find(s=>ML(s)==$('#m_s').value.trim());
 const mF=o=>{const c={};S.forEach(s=>c[s.t]=(c[s.t]||0)+1);ML=s=>c[s.t]>1?`${s.t} [${s.id}]`:s.t;
- return`<div class="ed" id="mf" data-md="${o.md}" data-id="${o.id}" data-d="${o.d}"${o.md=='m'?' style="margin:0"':''}${o.hd?' hidden':''}><label style="flex:1 1 100%">楽曲タイトル<input id="m_s" type="text" value="${o.s<0?'':esc(ML(S[o.s]))}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="タイトルを入力して候補から選択"></label><div class="sg" id="m_l" hidden></div><label style="flex:1 1 100%">難易度<select class="btn" id="m_d" style="width:100%"></select></label>${[['pf','PERFECT'],['gr','GREAT'],['go','GOOD'],['ba','BAD'],['mi','MISS'],['cb','コンボ']].map(a=>`<label>${a[1]}<input id="m_${a[0]}" type="number" min="0" inputmode="numeric" value="${o[a[0]]}"></label>`).join('')}<div class="kv" style="flex:1 1 100%;background:#fff"><small>判定数の合計 / ノーツ数</small><b id="m_sm">-</b></div><label style="flex:1 1 100%">撮影日時<input id="m_ts" type="datetime-local" step="1" value="${tl(o.ts)}"></label><button class="btn p" data-act="msave" style="margin-left:auto">${ic('check')}${o.md=='m'?'登録':'保存'}</button></div>`};
-function mfU(id){const f=$('#mf'),s=mS(),d=$('#m_d'),sid=s?s.id:'',q=nz($('#m_s').value),v=k=>Math.max(0,Math.floor(+$('#m_'+k).value)||0);
- if(d.dataset.s!=sid){const pd=d.value!==''?d.value:f.dataset.d;d.dataset.s=sid;d.innerHTML=s?D.map((x,i)=>s.lv[i]?`<option value="${i}">${x.n} Lv.${s.lv[i]}</option>`:'').join(''):'<option value="">先に楽曲を選択してください</option>';if(s&&[...d.options].some(x=>x.value==pd))d.value=pd}
+ return`<div class="ed" id="mf" data-md="${o.md}" data-id="${o.id}" data-d="${o.d}"${o.md=='m'?' style="margin:0"':''}${o.hd?' hidden':''}><label style="flex:1 1 100%">楽曲タイトル<input id="m_s" type="text" value="${o.s<0?'':esc(ML(S[o.s]))}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="タイトルを入力して候補から選択"></label><div class="sg" id="m_l" hidden></div><small class="sb w" id="m_in" style="flex:1 1 100%;color:#0E9F7E;margin-top:-4px" hidden></small><label style="flex:1 1 100%">難易度<select class="btn" id="m_d" style="width:100%"></select></label>${[['pf','PERFECT'],['gr','GREAT'],['go','GOOD'],['ba','BAD'],['mi','MISS'],['cb','コンボ']].map(a=>`<label>${a[1]}<input id="m_${a[0]}" type="number" min="0" inputmode="numeric" value="${o[a[0]]}"></label>`).join('')}<div class="kv" style="flex:1 1 100%;background:#fff"><small>判定数の合計 / ノーツ数</small><b id="m_sm">-</b></div><label style="flex:1 1 100%">撮影日時<input id="m_ts" type="datetime-local" step="1" value="${tl(o.ts)}"></label><button class="btn p" data-act="msave" style="margin-left:auto">${ic('check')}${o.md=='m'?'登録':'保存'}</button></div>`};
+function mfU(id){const f=$('#mf'),s0=$('#m_s'),d=$('#m_d'),v=k=>Math.max(0,Math.floor(+$('#m_'+k).value)||0),lk=+f.dataset.lv||0,sm0=v('pf')+v('gr')+v('go')+v('ba')+v('mi'),
+ ok=(x,y,u)=>y!==''&&x.lv[y]&&(!lk||x.lv[y]==lk)&&(!u||x.nt[y]==sm0);
+ if(id=='m_s'){delete s0.dataset.inf;s0.classList.remove('af')}if(id=='m_d')f.dataset.dm=1;
+ if(s0.dataset.inf){const x=mS();if(!(x&&ok(x,d.value,s0.dataset.inf=='1'))){s0.value='';delete s0.dataset.inf;s0.classList.remove('af')}}
+ let s=mS(),q=nz(s0.value),cl=[];
+ /* タイトル未入力でも、難易度＋（レベル／判定の合計＝ノーツ数）で曲が1つに絞れたらタイトルを補う */
+ if(!s&&!q&&d.value!==''&&(sm0||lk)){cl=S.filter(x=>ok(x,d.value,sm0>0));if(cl.length==1){s=cl[0];s0.value=ML(s);s0.dataset.inf=sm0?'1':'0';s0.classList.add('af');q=nz(s0.value);cl=[]}}
+ const sid=s?s.id:'';
+ if(d.dataset.s!=sid){const pd=d.value!==''?d.value:f.dataset.d;d.dataset.s=sid;d.innerHTML=s?D.map((x,i)=>s.lv[i]?`<option value="${i}">${x.n} Lv.${s.lv[i]}</option>`:'').join(''):'<option value="">難易度を選択</option>'+D.map((x,i)=>`<option value="${i}">${x.n}</option>`).join('');if([...d.options].some(x=>x.value==pd))d.value=pd}
  const nt=s&&d.value!==''?s.nt[+d.value]:0;
  if(id=='m_pf')f.dataset.m=1;else if(!f.dataset.m&&nt&&id!='init'&&id!='m_cb'&&id!='m_ts')$('#m_pf').value=Math.max(0,nt-v('gr')-v('go')-v('ba')-v('mi'));
- const sm=v('pf')+v('gr')+v('go')+v('ba')+v('mi'),e=$('#m_sm'),l=$('#m_l'),a=s||!q?[]:S.filter(x=>nz(ML(x)).includes(q)||nz(x.pr).includes(q)).sort((x,y)=>nz(ML(y)).startsWith(q)-nz(ML(x)).startsWith(q)).slice(0,40);
+ const sm=v('pf')+v('gr')+v('go')+v('ba')+v('mi'),e=$('#m_sm'),l=$('#m_l'),n=$('#m_in'),a=cl.length?cl.slice(0,40):s||!q?[]:S.filter(x=>nz(ML(x)).includes(q)||nz(x.pr).includes(q)).sort((x,y)=>nz(ML(y)).startsWith(q)-nz(ML(x)).startsWith(q)).slice(0,40);
  e.textContent=nt?`${sm} / ${nt}`:'-';e.style.color=nt&&sm!=nt?'#E5484D':'';
- l.hidden=!!s||!q;l.innerHTML=a.length?a.map(x=>`<button type="button" data-act="mpick" data-s="${x.i}"><b>${esc(ML(x))}</b><small>${esc(tgs(x))}</small></button>`).join(''):'<small>該当する楽曲がありません</small>'}
+ n.hidden=!(s&&s0.dataset.inf);n.textContent=n.hidden?'':`${D[+d.value].n}${lk?'・レベル '+lk:''}${s0.dataset.inf=='1'?'・ノーツ数 '+sm0:''} から、楽曲を「${s.t}」のみに絞れたため補いました（タイトルを入力すると上書きされます）`;
+ l.hidden=!!s||!(q||cl.length);l.innerHTML=a.length?a.map(x=>`<button type="button" data-act="mpick" data-s="${x.i}"><b>${esc(ML(x))}</b><small>${cl.length?`${D[+d.value].n} Lv.${x.lv[+d.value]} / ${x.nt[+d.value]}ノーツ`:esc(tgs(x))}</small></button>`).join(''):'<small>該当する楽曲がありません</small>'}
 const AF={pf:'PERFECT',gr:'GREAT',go:'GOOD',ba:'BAD',mi:'MISS',cb:'コンボ'};
 /* 手動登録：自動解析の結果のうち信頼度の高い項目（CONF）だけをフォームへ入力する。入力済み・編集済みの項目は上書きしない */
 async function autoFill(e){const k=EK,m=$('#m_ai'),fx=()=>{const f=$('#mf');return k==EK&&f&&f.dataset.id==e.u?f:null};
  try{if(!e.pt){m.innerHTML='<span class="sp" style="display:inline-block;width:12px;height:12px;margin:0 6px -2px 0;border-width:2px"></span>解析結果を確認しています…';
    const b=await createImageBitmap(await(await api(`${DV}/${e.u}?alt=media`)).blob());try{await tw();e.pt=(await analyze(b,{})).part||{}}finally{b.close()}}
   const f=fx();if(!f)return;const p=e.pt,w=[],mk=(x,l)=>{x.classList.add('af');w.push(l)},s0=$('#m_s'),dd=$('#m_d');
-  if(p.s!=null&&!s0.value){s0.value=ML(S[p.s]);mk(s0,'楽曲');mfU('m_s')}
-  const sm=mS();if(p.d!=null&&sm&&sm.i==p.s&&[...dd.options].some(x=>x.value==p.d)){dd.value=p.d;mk(dd,'難易度');mfU('m_d')}
+  if(p.lv)f.dataset.lv=p.lv;if(p.s!=null&&!s0.value){s0.value=ML(S[p.s]);mk(s0,'楽曲');mfU('af')}
+  if(p.d!=null&&!f.dataset.dm&&[...dd.options].some(x=>x.value==p.d)){dd.value=p.d;mk(dd,'難易度');mfU('af')}
   for(const x in AF){const i=$('#m_'+x);if(p[x]!=null&&(x=='pf'?!f.dataset.m:!+i.value)){i.value=p[x];mk(i,AF[x]);if(x=='pf')f.dataset.m=1}}
   mfU('m_gr');m.textContent=w.length?`自動解析の結果から、信頼度の高い項目（${w.join('、')}）を入力しました。画像と見比べて確認してください。`:'信頼度の高い解析結果がなかったため、自動入力はありません。'
  }catch(x){fx()&&(m.textContent='自動解析の結果を取得できませんでした。手動で入力してください。')}}
@@ -776,7 +808,7 @@ async function analyze(bm,tr){
       /* 結果が空なら別のページ分割モードで1度だけ再試行（1文字だけの領域などの救済） */
       if(n!='A'&&!/[0-9A-Za-z]/.test(t))t=await ocr1(w,n=='B'?8:10,RL[n],u,cf[n])}
     T[n]=t;if(tr){tr.regs[n].text=t;tr.cb&&tr.cb(n)}}
-  const pt={},note=s=>tr&&tr.notes.push(s),fin=(o)=>{if(pt.d!=null){const z=S[pt.s].nt[pt.d];for(const k of['pf','gr','go','ba','mi','cb'])if(pt[k]>z)delete pt[k]}o.part=pt;if(tr)tr.out=o;return o};
+  const pt={},note=s=>tr&&tr.notes.push(s),fin=(o)=>{if(pt.d!=null&&pt.s!=null){const z=S[pt.s].nt[pt.d];for(const k of['pf','gr','go','ba','mi','cb'])if(pt[k]>z)delete pt[k]}o.part=pt;if(tr)tr.out=o;return o};
   const tt=T.A,td=(T.B||'').replace(/[^A-Za-z]/g,''),Lv=dg(T.C),v={pf:dg(T.D),gr:dg(T.E),go:dg(T.F),ba:dg(T.G),mi:dg(T.H)},cbR=dg(T.I);
   [['D','pf'],['E','gr'],['F','go'],['G','ba'],['H','mi']].forEach(([n,k])=>{if(!isNaN(v[k])&&cf[n].c>=CONF.n)pt[k]=v[k]});if(!isNaN(cbR)&&cf.I.c>=CONF.n)pt.cb=cbR;
   if(tr){tr.regs.B.val=td;tr.regs.C.val=isNaN(Lv)?'':String(Lv);[['D','pf'],['E','gr'],['F','go'],['G','ba'],['H','mi']].forEach(([n,k])=>tr.regs[n].val=isNaN(v[k])?'':String(v[k]));tr.regs.I.val=isNaN(cbR)?'':String(cbR)}
@@ -785,12 +817,19 @@ async function analyze(bm,tr){
   let si=-1,tv=0;S.forEach((q,i)=>{const x=sim(tt,q.t);if(x>tv){tv=x;si=i}});
   if(tr)tr.regs.A.val=si<0?'':`${S[si].t}（類似度 ${Math.round(tv*100)}%）`;
   if(si>=0&&tv>=CONF.t)pt.s=si;
-  if(si<0||tv<.6){note(`タイトル「${(tt||'').trim()}」に近い曲が見つかりません（最大類似度 ${Math.round(tv*100)}%）`);return fin({err:'title:'+Math.round(tv*100)})}
-  const q=S[si];note(`タイトル「${(tt||'').trim()}」→「${q.t}」（類似度 ${Math.round(tv*100)}%）`);
+  const k5=['pf','gr','go','ba','mi'],s5=k5.every(k=>!isNaN(v[k]))?k5.reduce((a,k)=>a+v[k],0):0,dn=D.map(x=>sim(td,x.n)),db=Math.max(...dn),dI=db>=CONF.d?dn.indexOf(db):-1;let by='';
+  if(!isNaN(Lv))pt.lv=Lv;
+  if(si<0||tv<.6){
+    /* タイトルが読めない：読めた手がかり（難易度・レベル・判定の合計＝ノーツ数）に合う曲が1つだけなら補う（手がかりは2種類以上必要） */
+    const cn=[];S.forEach((x,i)=>x.lv.forEach((l,j)=>{if(l&&(dI<0||j==dI)&&(isNaN(Lv)||l==Lv)&&(!s5||x.nt[j]==s5))cn.push(i)}));
+    if(new Set(cn).size==1&&(dI>=0)+!isNaN(Lv)+(s5>0)>=2){si=cn[0];pt.s=si;by=[dI>=0?'難易度 '+D[dI].n:'',isNaN(Lv)?'':'レベル '+Lv,s5?'ノーツ数 '+s5:''].filter(Boolean).join('・')}
+    else{note(`タイトル「${(tt||'').trim()}」に近い曲が見つかりません（最大類似度 ${Math.round(tv*100)}%）`);if(dI>=0)pt.d=dI;return fin({err:'title:'+Math.round(tv*100)})}}
+  const q=S[si];note(by?`タイトルは読み取れませんでしたが、${by} から「${q.t}」のみに絞れたため補いました`:`タイトル「${(tt||'').trim()}」→「${q.t}」（類似度 ${Math.round(tv*100)}%）`);
   /* 難易度：名前の近さ → レベルとの突き合わせ */
   let d=-1,dv=0;D.forEach((x,i)=>{if(!q.lv[i])return;const s=sim(td,x.n);if(s>dv){dv=s;d=i}});if(dv<.5)d=-1;
   const c=q.lv.map((x,i)=>x&&x==Lv?i:-1).filter(i=>i>=0);
-  if(d<0){if(c.length!=1){note(`難易度「${td}」を特定できません（レベル ${isNaN(Lv)?'不明':Lv} に一致する難易度が ${c.length} 件）`);return fin({err:'diff:0'})}d=c[0];note(`難易度はレベル ${Lv} から ${D[d].n} と判断`)}
+  if(d<0){let cc=isNaN(Lv)?q.lv.map((x,i)=>x?i:-1).filter(i=>i>=0):c;if(cc.length>1&&s5)cc=cc.filter(i=>q.nt[i]==s5);
+    if(cc.length!=1){note(`難易度「${td}」を特定できません（レベル ${isNaN(Lv)?'不明':Lv} に一致する難易度が ${c.length} 件）`);return fin({err:'diff:0'})}d=cc[0];if(pt.s!=null)pt.d=d;note(`難易度は${isNaN(Lv)?'ノーツ数 '+s5:c.length>1?'レベル '+Lv+' とノーツ数 '+s5:'レベル '+Lv} から ${D[d].n} と判断`)}
   else if(!isNaN(Lv)&&q.lv[d]!=Lv){if(dv<.8&&c.length==1){d=c[0];note(`難易度「${td}」とレベル ${Lv} が不一致のため、レベルを優先して ${D[d].n} と判断`)}else{note(`難易度 ${D[d].n}（Lv.${q.lv[d]}）と読み取ったレベル ${Lv} が一致しません`);if(pt.s!=null&&dv>=CONF.d)pt.d=d;return fin({err:'lv:0'})}}
   else note(`難易度「${td}」→ ${D[d].n}、レベル ${isNaN(Lv)?'未読取':Lv}（曲データ Lv.${q.lv[d]}）`);
   if(pt.s!=null&&(dv>=CONF.d||(!isNaN(Lv)&&q.lv[d]==Lv)))pt.d=d;
@@ -833,32 +872,46 @@ async function redo(f,keep){const o=await proc(f);
  if(o.rec){await commit(f,o);R=R.filter(x=>x.id!=f.id);ER=ER.filter(x=>x.u!=f.id);R.push(o.rec);bld()}
  else if(!keep){await commit(f,o);ER=ER.filter(x=>x.u!=f.id);ER.push(mkE(f,o.err,o.part))}return o}
 /* ---- トランザクション（処理中は操作不能・中断しても次回起動時に整合） ---- */
-function txS(i,q,l){TXP[i]=q;for(let j=0;j<i;j++)TXP[j]=1;
- for(let j=0;j<TXN;j++){const x=$('#ps'+j);if(!x)continue;const p=TXP[j]||0;x.className=p>=1?'ok':j==i?'on':'';x.children[2].textContent=p>=1?'完了':j==i?(l||''):'';x.children[3].firstChild.style.width=Math.min(1,p)*100+'%'}
- const t=TXP.slice(0,TXN).reduce((a,b)=>a+(b||0),0)/TXN;$('#tb').style.width=t*100+'%';$('#tp').textContent=Math.floor(t*100)+'%';TXT=t;TXL=l||'';TXM&&scU()}
-async function run(m,sp,fn,sy){if(TX)return 0;TX=1;TXM=0;TXN=sp.length;TXP=[];LS.setItem('sr_tx',JSON.stringify({m,t:Date.now()}));$('#tm').textContent=m;$('#ta').hidden=!sy;$('#tpz').disabled=false;$('#tpz').innerHTML=ic('pause')+'中断';
- $('#tl').innerHTML=sp.map((x,i)=>`<li id="ps${i}"><i class="si"></i><span>${x}</span><em></em><div class="sbp"><i></i></div></li>`).join('');$('#pv').hidden=true;$('#tx').classList.add('on');txS(0,0);let ok=1;
+const eta=s=>{if(s<8)return'まもなく完了';if(s<60)return'約'+Math.ceil(s/5)*5+'秒';s=Math.round(s/10)*10;const h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60;return'約'+(h?h+'時間':'')+(m?m+'分':'')+(r&&!h?r+'秒':'')},
+lrn=(k,ms,n)=>{const o=gj('sr_tm')||{},x=ms/n/1e3;o[k]=o[k]?o[k]*.5+x*.5:x;LS.setItem('sr_tm',JSON.stringify(o))};
+/* 進捗：各ステップに「推定所要秒」の重みを持たせ、作業量が分かった時点・実測が取れた時点で補正する。%＝完了した重み÷総重み（戻らない）、残り時間＝未完了の重みの合計 */
+function txW(a,k){a.forEach((x,i)=>{if(x!=null)TXW[i]=x});TXF=0;TXE=0;if(k)TXK=1;txR()}
+function txS(i,q,l,n){const t=Date.now();
+ if(i!=TXI){for(let j=Math.max(TXI,0);j<i;j++){TXP[j]=1;if(TXB[j]!=null)TXW[j]=Math.max(.3,(t-TXB[j])/1e3)}TXI=i;TXB[i]=t}
+ if(!q)TXB[i]=t;TXP[i]=q;TXn[i]=n||1;TXR0=t;TXL=l||'';
+ if(n>1&&q*n>=1)TXW[i]=(t-TXB[i])/1e3/q;
+ for(let j=0;j<TXN;j++){const x=$('#ps'+j);if(!x)continue;const p=TXP[j]||0;x.className=p>=1?'ok':j==i?'on':'';x.children[2].textContent=p>=1?'完了':j==i?(l||''):''}
+ txR()}
+function txR(){if(!TX)return;const t=Date.now(),i=Math.max(TXI,0),n=TXn[i]||1,pi=TXP[i]||0,qi=pi>=1?1:Math.min(.98,pi+Math.min(.7,(t-TXR0)/1e3/((TXW[i]||1)/n))/n);
+ let a=0,s=0;TXW.forEach((x,j)=>{s+=x;if(j<i)a+=x;else if(j==i)a+=x*qi});
+ const p=Math.max(TXF,s?a/s:0);TXF=TXT=p;TXE=TXE?TXE*.9+(t+(s-a)*1e3)*.1:t+(s-a)*1e3;
+ $('#tb').style.width=p*100+'%';$('#tp').textContent=Math.floor(p*100)+'%';
+ const x=$('#ps'+i);if(x)x.children[3].firstChild.style.width=qi*100+'%';
+ if(TXY){const z=Math.max(0,(TXE-t)/1e3),e=(t-TXS0)/1e3;TXZ=TXK&&p<1?(z<8?'まもなく完了':'残り'+eta(z)):'';$('#tz').textContent=TXK?(p<1?'残り時間の目安：'+eta(z):'まもなく完了'):'残り時間を見積もり中…';$('#tc').textContent='経過 '+Math.floor(e/60)+':'+String(Math.floor(e%60)).padStart(2,'0')}
+ TXM&&scU()}
+async function run(m,sp,fn,sy,w){if(TX)return 0;TX=1;TXM=0;TXN=sp.length;TXP=[];TXW=w||sp.map(()=>3);TXB=[];TXn=[];TXF=0;TXE=0;TXK=0;TXI=-1;TXZ='';TXY=!!sy;TXS0=TXR0=Date.now();$('#te').hidden=!sy;LS.setItem('sr_tx',JSON.stringify({m,t:Date.now()}));$('#tm').textContent=m;$('#ta').hidden=!sy;$('#tpz').disabled=false;$('#tpz').innerHTML=ic('pause')+'中断';
+ $('#tl').innerHTML=sp.map((x,i)=>`<li id="ps${i}"><i class="si"></i><span>${x}</span><em></em><div class="sbp"><i></i></div></li>`).join('');$('#pv').hidden=true;$('#tx').classList.add('on');txS(0,0);clearInterval(TXTM);TXTM=setInterval(txR,250);let ok=1;
  try{await fn();txS(TXN-1,1);await new Promise(r=>setTimeout(r,350))}catch(e){ok=0;console.error(e);toast(e.message||'エラーが発生しました',null,1)}
- LS.removeItem('sr_tx');TX=0;TXM=0;$('#pv').hidden=true;$('#tx').classList.remove('on');scU();return ok}
+ LS.removeItem('sr_tx');clearInterval(TXTM);TX=0;TXM=0;$('#pv').hidden=true;$('#tx').classList.remove('on');scU();return ok}
 function scU(){let c=$('#sc');const on=TX&&TXM,ps=!TX&&PS;if(!on&&!ps){c&&c.remove();return}
  if(!c){c=document.createElement('div');c.id='sc';c.className='t sc';c.innerHTML=`<div class="rw"><div class="sp" id="scs"></div><b class="tt" id="sct" style="flex:1"></b></div><div class="pb" id="scp"><i id="scb"></i></div><div class="row"><button class="btn" id="sc1" data-act="tmax">${ic('chev')}詳細</button><button class="btn d" id="sc2" data-act="tpz">${ic('pause')}中断</button><button class="btn p" id="sc3" data-act="sync">${ic('play')}続きから再開</button><button class="btn" id="sc4" data-act="scx">${ic('x')}閉じる</button></div>`;$('#ts').prepend(c)}
  $('#scs').hidden=$('#scp').hidden=!on;$('#sc1').hidden=$('#sc2').hidden=!on;$('#sc3').hidden=$('#sc4').hidden=!!on;
- if(on){const p=Math.floor(TXT*100);$('#sct').textContent=PZ?'中断しています…':`同期中 ${p}%${TXL?'　'+TXL:''}`;$('#scb').style.width=p+'%';$('#sc2').disabled=!!PZ}
+ if(on){const p=Math.floor(TXT*100);$('#sct').textContent=PZ?'中断しています…':`同期中 ${p}%${TXZ?'・'+TXZ:''}${TXL?'　'+TXL:''}`;$('#scb').style.width=p+'%';$('#sc2').disabled=!!PZ}
  else $('#sct').textContent=`同期を中断しました（${PS}）`}
-async function sync(up){if(TX)return;const u=[...(up||[]),...RU];RU=[];PZ=0;PS='';scU();const sp=['Googleドライブに接続','フォルダの差分を検出'].concat(u.length?['画像をアップロード']:[],['OCRで解析','自己ベストを照合']),iO=u.length?3:2;let nn=0,ne=0;
+async function sync(up){if(TX)return;const u=[...(up||[]),...RU];RU=[];PZ=0;PS='';scU();const tm=gj('sr_tm')||{},uT=tm.u||1.5,oT=tm.o||4,sp=['Googleドライブに接続'].concat(u.length?['画像をアップロード']:[],['フォルダの差分を検出','OCRで解析','自己ベストを照合']),iU=1,iD=u.length?2:1,iO=iD+1,w=[(TKN?1:3)+(S.length?0:4)].concat(u.length?[u.length*uT]:[],[3,Math.max(.3,u.length*oT),1]);let nn=0,ne=0;
  const ok=await run('Googleドライブと同期しています',sp,async()=>{
   txS(0,.2);if(!TKN)await auth();if(!S.length){txS(0,.5,'楽曲情報を取得');await master()}FID=await folder();
-  for(let k=0;k<u.length;k++){if(PZ){RU=u.slice(k);break}txS(2,k/u.length,`${k+1} / ${u.length} 枚`);try{await pvF(u[k]);await upl(u[k])}catch(e){RU=u.slice(k);PS='未アップロード '+RU.length+' 枚';throw e}}if(RU.length){PS='未アップロード '+RU.length+' 枚';return}
-  txS(1,.3);const td=await load();td.sort((a,b)=>tsOf(a)-tsOf(b));
+  const tu0=Date.now();let k=0;for(;k<u.length;k++){if(PZ){RU=u.slice(k);break}txS(iU,k/u.length,`${k+1} / ${u.length} 枚`,u.length);try{await pvF(u[k]);await upl(u[k])}catch(e){RU=u.slice(k);PS='未アップロード '+RU.length+' 枚';throw e}}k&&lrn('u',Date.now()-tu0,k);if(RU.length){PS='未アップロード '+RU.length+' 枚';return}
+  txS(iD,.3);const td=await load();td.sort((a,b)=>tsOf(a)-tsOf(b));const wa=[];wa[iO]=Math.max(.3,td.length*oT);wa[iO+1]=1+R.length/500;txW(wa,1);
   const first=!R.length||LS.getItem('sr_f')=='1',BM=new Map,add=r=>{const k=r.s+'-'+r.d,v=mt4(r),b=BM.get(k);BM.set(k,b?b.map((x,i)=>Math.min(x,v[i])):v);return[b,v]};R.forEach(r=>add(r));if(first)LS.setItem('sr_f','1');
-  if(td.length){txS(iO,0,'OCRエンジンを準備中');await tw()}
-  for(let i=0;i<td.length;i++){if(PZ){PS='残り '+(td.length-i)+' 枚';break}const f=td[i];txS(iO,i/td.length,`${i+1} / ${td.length} 枚`);let o;
+  if(td.length){txS(iO,0,'OCRエンジンを準備中',td.length);await tw()}
+  const to0=Date.now();let i=0;for(;i<td.length;i++){if(PZ){PS='残り '+(td.length-i)+' 枚';break}const f=td[i];txS(iO,i/td.length,`${i+1} / ${td.length} 枚`,td.length);let o;
    try{o=await proc(f)}catch(e){if(/\(40[13]\)/.test(e.message))throw e;o={err:'api:0',tmp:1}}
    if(o.rec){await commit(f,o);const[b,v]=add(o.rec);R.push(o.rec);bld();
     const t=first?'':b?v.map((x,j)=>x<b[j]?`${CN[j]} ${Math.abs(b[j])} → ${Math.abs(x)}`:'').filter(Boolean).join(' / '):'初回記録';
     if(t){N.unshift({u:Date.now()+i,k:'rec',id:o.rec.id,t:Date.now(),tx:t});sv();nn++}}
-   else{await commit(f,o);ER.push(mkE(f,o.err,o.part));ne++}}
-  txS(iO+1,.5);bld();N=N.filter(n=>R.some(r=>r.id==n.id));sv();if(!PS)LS.removeItem('sr_f')},1);
+   else{await commit(f,o);ER.push(mkE(f,o.err,o.part));ne++}}i&&lrn('o',Date.now()-to0,i);
+  txS(iO+1,.5);bld();N=N.filter(n=>R.some(r=>r.id==n.id));sv();if(!PS)LS.removeItem('sr_f')},1,w);
  view();if(!ok)return;
  if(nn)toast(`自己ベストを${nn}件更新しました。タップして確認`,'notif');
  if(ne)toast(`読み取りエラー・重複が${ne}件あります。タップして確認`,'notif',1,()=>{st.nt='err'})}
@@ -897,17 +950,18 @@ const lvt=()=>{const m=new Map();S.forEach((s,i)=>s.lv.forEach((l,d)=>{if(!l)ret
 const selV=()=>{const s=S[st.sel[0]],d=D[st.sel[1]];return`<div class="pg"><div class="vs" id="vs"><div class="tb"><button class="btn" data-act="sback">${ic('back')}曲から探す画面に戻る</button></div><div class="tb"><span class="ut" style="padding:7px 12px;font-size:12px">${s.t} / ${d.n}</span></div><div class="tb"><select class="btn" data-k="ms"><option value="m">ミス数順</option><option value="a">追加日順</option></select><button class="btn" id="dir" data-act="dir"></button><label class="sw"><input type="checkbox" data-k="mb"><i></i>自己ベストのみ</label></div><p class="cnt" id="cn"></p><div id="vb"></div></div></div>`};
 const VW={
 home(){const g=[...G.values()],
- k=[['登録リザルト',R.length],['FC達成',g.filter(a=>a.some(clr)).length],['AP達成',g.filter(a=>a.some(r=>clr(r)=='AP')).length],['未確認の通知',N.length+ER.length]];
+ tot=S.reduce((a,s)=>a+s.lv.filter(Boolean).length,0),pc=n=>tot?Math.round(n/tot*100):0,nf=g.filter(a=>a.some(clr)).length,na=g.filter(a=>a.some(r=>clr(r)=='AP')).length,nn=N.length+ER.length,
+ k=[['登録リザルト',R.length,'image','#2C7BF5,#14C29B',`${g.length} 譜面を記録`,-1],['FC達成',nf,'check','#FF6FB0,#FFB347',`全 ${tot} 譜面中 ${pc(nf)}%`,pc(nf)],['AP達成',na,'star','#31C9F0,#FF7DCB,#FFD04A',`全 ${tot} 譜面中 ${pc(na)}%`,pc(na)],['未確認の通知',nn,'bell',nn?'#FF5A6E,#FF9F43':'#8FA0BC,#B4C2D8',`記録更新 ${N.length} ／ エラー ${ER.length}`,-1]];
  return`<div class="pg sy"><div class="hero"><h1>ドライブの画像から、<br>自己ベストを見つける。</h1><p>リザルト画像をOCRで読み取り、記録の更新をお知らせします。</p><div class="row"><button class="btn p" data-act="up">${ic('upload')}画像を追加</button><button class="btn" data-act="sync">${PS?ic('play')+'続きから再開':ic('sync')+'ドライブと同期'}</button></div>
  </div>
- <div class="stl">${k.map(a=>`<div><b>${a[1]}</b><span>${a[0]}</span></div>`).join('')}</div>${lvt()}<h3>最近追加したリザルト</h3><div class="cg">${[...R].sort((a,b)=>b.ad-a.ad).slice(0,6).map(r=>card(r)).join('')}</div></div>`},
+ <div class="stl">${k.map(a=>`<div class="st" style="--g:linear-gradient(135deg,${a[3]})"${a[0]=='未確認の通知'?' data-act="go" data-v="notif"':''}><i class="sj">${ic(a[2])}</i><span>${a[0]}</span><b>${a[1]}</b><small>${a[4]}</small>${a[5]>=0?`<div class="sbr"><i style="width:${a[5]}%"></i></div>`:''}${a[0]=='未確認の通知'&&nn?'<em class="pu"></em>':''}</div>`).join('')}</div>${lvt()}<h3>最近追加したリザルト</h3><div class="cg">${[...R].sort((a,b)=>b.ad-a.ad).slice(0,6).map(r=>card(r)).join('')}</div></div>`},
 songs(){if(st.sel)return selV();return`<div class="pg"><div class="vs" id="vs"><div class="tb"><select class="btn" data-k="unit" data-n="1"><option value="-1">すべてのユニット</option>${UN.map((u,i)=>`<option value="${i}">${u}</option>`).join('')}</select><label class="sf">${ic('search')}<input data-k="q" placeholder="タイトル・作詞・作曲・編曲で検索" autocomplete="off"></label></div>
  <div class="tb"><select class="btn" data-k="ss"><option value="t">タイトル順</option><option value="rel">公開日順</option><option value="lv">レベル順</option></select><select class="btn" id="sl" data-k="sd" data-n="1" hidden>${D.map((d,i)=>`<option value="${i}">${d.n}</option>`).join('')}</select><button class="btn" id="dir" data-act="dir"></button><label class="sw"><input type="checkbox" data-k="dr"><i></i>ドライブ内の曲のみ</label></div><p class="cnt" id="cn"></p><div id="vb"></div></div></div>`},
 list(){return`<div class="pg"><div class="tb"><select class="btn" data-k="ls"><option value="n">名前順</option><option value="l">楽曲レベル順</option><option value="m">ミス数順</option><option value="a">追加日順</option></select><select class="btn" id="ll" data-k="ld" data-n="1" hidden><option value="-1">全難易度</option>${D.map((d,i)=>`<option value="${i}">${d.n}</option>`).join('')}</select><button class="btn" id="dir" data-act="dir"></button><label class="sw"><input type="checkbox" data-k="best"><i></i>自己ベストのみ</label></div>
  <p class="cnt" id="cn"></p><div class="vs" id="vs"></div></div>`},
 notif(){const L=st.nt=='err'?ER:N;return`<div class="pg sy"><div class="tb"><button class="btn" data-act="back">${ic('back')}戻る</button>${st.nt=='rec'&&N.length?`<button class="btn" data-act="nclr">${ic('check')}既読にする</button>`:''}</div><div class="tabs" style="margin-bottom:16px">${[['rec','記録更新',N],['err','エラー',ER]].map(a=>`<button class="${st.nt==a[0]?'on':''}" data-act="nt" data-v="${a[0]}">${a[1]} ${a[2].length}</button>`).join('')}</div>
- ${L.map(n=>{if(n.k=='err')return`<div class="ni e"><div class="ni-im">${thm({th:n.fm.thumbnailLink},320)}</div><div class="ci" style="gap:2px"><b class="tt">${n.f}</b><span class="sb w">${n.tx}</span></div><span class="row" style="flex:none">${/^dup:\d+:./.test(n.e)?`<button class="btn" data-act="cmp" data-u="${n.u}">${ic('image')}重複を比較</button>`:''}<button class="btn" data-act="man" data-u="${n.u}">${ic('edit')}手動登録</button><button class="btn d" data-act="fix" data-u="${n.u}" data-v="d">${ic('trash')}削除</button></span></div>`;
- const r=R.find(x=>x.id==n.id);return r?`<div class="ni" data-act="card" data-id="${r.id}"><div class="ni-im">${thm(r,320)}</div><div class="ci" style="gap:4px"><b class="tt">${S[r.s].t}</b><div class="rw"><span class="dc" style="--c:${D[r.d].c}">${D[r.d].n} ${r.lv}</span><span class="sb">${n.tx}</span></div></div><span class="sb">${fd(n.t)}</span></div>`:''}).join('')||'<p class="cnt">通知はありません</p>'}</div>`},
+ ${L.map(n=>{if(n.k=='err')return`<div class="ni e"><div class="ni-im" style="--ar:${arx((n.fm.imageMediaMetadata||{}).width,(n.fm.imageMediaMetadata||{}).height)}">${thm({th:n.fm.thumbnailLink},320)}</div><div class="ci" style="gap:2px"><b class="tt">${n.f}</b><span class="sb w">${n.tx}</span></div><span class="row" style="flex:none">${/^dup:\d+:./.test(n.e)?`<button class="btn" data-act="cmp" data-u="${n.u}">${ic('image')}重複を比較</button>`:''}<button class="btn" data-act="man" data-u="${n.u}">${ic('edit')}手動登録</button><button class="btn d" data-act="fix" data-u="${n.u}" data-v="d">${ic('trash')}削除</button></span></div>`;
+ const r=R.find(x=>x.id==n.id);return r?`<div class="ni" data-act="card" data-id="${r.id}"><div class="ni-im" style="--ar:${arx(r.W,r.H)}">${thm(r,320)}</div><div class="ci" style="gap:4px"><b class="tt">${S[r.s].t}</b><div class="rw"><span class="dc" style="--c:${D[r.d].c}">${D[r.d].n} ${r.lv}</span><span class="sb">${n.tx}</span></div></div><span class="sb">${fd(n.t)}</span></div>`:''}).join('')||'<p class="cnt">通知はありません</p>'}</div>`},
 set(){return`<div class="pg sy"><div class="cx"><h3>アカウント</h3><div class="set"><span>${US.n}<br><small class="sb">${US.e}</small></span><button class="btn" data-act="logout">${ic('logout')}ログアウト</button></div></div>
  <div class="cx"><h3>Googleドライブ</h3><div class="set"><span>連携フォルダ<br><small class="sb">マイドライブ / ${FN}</small></span><button class="btn p" data-act="sync">${PS?ic('play')+'続きから再開':ic('sync')+'今すぐ同期'}</button></div></div>
  <div class="cx"><h3>解析ビューア</h3><div class="set"><span>画像を選んで、領域の検出（スキャン線・境界線・領域）と<br>各領域の処理前後・OCR結果を確認します<br><small class="sb">ドライブには保存されません</small></span><button class="btn" data-act="anf">${ic('scan')}画像を選ぶ</button></div></div>
@@ -966,8 +1020,8 @@ const A={go:t=>go(t.dataset.v),side:()=>$('#app').classList.toggle(mob()?'open':
   if(sm!=nt)return toast(`判定数の合計（${sm}）がノーツ数（${nt}）と一致しません`,null,1);if(n.cb>nt)return toast(`コンボ数がノーツ数（${nt}）を超えています`,null,1);if(isNaN(tv))return toast('撮影日時を正しく入力してください',null,1);
   const b={s:s.i,d,lv:s.lv[d],nt,...n,ts:Math.floor(tv/1000)*1000};
   if(f.dataset.md=='e'){const r=R.find(x=>x.id==f.dataset.id);if(!r)return;const o={...r,...b};closeM();run('リザルトを修正しています',['ドライブに保存'],async()=>{txS(0,.4);await pat(r.id,{appProperties:{r:enc(o)}});Object.assign(r,o);bld()}).then(ok=>{view();ok&&(detail(r.id),toast('リザルトを修正しました'))});return}
-  const e=ER.find(x=>x.u==f.dataset.id);if(!e)return;const fl=e.fm,m=fl.imageMediaMetadata||{},rec={...b,id:fl.id,nm:fl.name,fm:fl,ad:Date.parse(fl.createdTime),th:fl.thumbnailLink||'',W:m.width||0,H:m.height||0,h:''};
-  closeM();run('リザルトを登録しています',['ドライブに保存'],async()=>{txS(0,.4);await commit(fl,{rec});R=R.filter(x=>x.id!=fl.id);ER=ER.filter(x=>x.u!=fl.id);R.push(rec);bld()}).then(ok=>{view();ok&&toast('手動でリザルトを登録しました')})},
+  const e=ER.find(x=>x.u==f.dataset.id);if(!e)return;const fl=e.fm,m=fl.imageMediaMetadata||{},rec={...b,id:fl.id,nm:fl.name,fm:fl,ad:Date.parse(fl.createdTime),th:fl.thumbnailLink||'',W:m.width||0,H:m.height||0,h:''},ut=bsT(rec);
+  closeM();run('リザルトを登録しています',['ドライブに保存'],async()=>{txS(0,.4);await commit(fl,{rec});R=R.filter(x=>x.id!=fl.id);ER=ER.filter(x=>x.u!=fl.id);R.push(rec);bld();if(ut){N.unshift({u:Date.now(),k:'rec',id:rec.id,t:Date.now(),tx:ut});sv()}}).then(ok=>{view();ok&&(ut?toast('手動で登録し、自己ベストを更新しました。タップして確認','notif'):toast('手動でリザルトを登録しました'))})},
  fix:t=>{const e=ER.find(x=>x.u==t.dataset.u);if(!e)return;closeM();
   t.dataset.v=='d'?run('削除しています',['ドライブから画像を削除'],async()=>{txS(0,.3);await pat(e.u,{trashed:true});ER=ER.filter(x=>x!=e)}).then(ok=>{view();ok&&toast('ドライブから画像を削除しました')})
   :run('OCRを再実行しています',['OCRで解析'],async()=>{txS(0,.3);const o=await redo(e.fm);toast(o.rec?'OCRで記録を復元しました':etx(o.err),null,!o.rec)}).then(()=>{view();t.dataset.re&&ER.some(x=>x.u==e.u)&&A.man({dataset:{u:e.u}})})}};
